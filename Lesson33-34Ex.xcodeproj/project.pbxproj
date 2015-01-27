@@ -9,11 +9,13 @@
 /* Begin PBXBuildFile section */
 		E01FC3ED1A77C004008B5FDC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E01FC3EC1A77C004008B5FDC /* main.m */; };
 		E01FC3F01A77C004008B5FDC /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E01FC3EF1A77C004008B5FDC /* AppDelegate.m */; };
-		E01FC3F31A77C004008B5FDC /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E01FC3F21A77C004008B5FDC /* ViewController.m */; };
 		E01FC3F61A77C004008B5FDC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E01FC3F41A77C004008B5FDC /* Main.storyboard */; };
 		E01FC3F81A77C004008B5FDC /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E01FC3F71A77C004008B5FDC /* Images.xcassets */; };
 		E01FC3FB1A77C004008B5FDC /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E01FC3F91A77C004008B5FDC /* LaunchScreen.xib */; };
 		E01FC4071A77C004008B5FDC /* Lesson33_34ExTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E01FC4061A77C004008B5FDC /* Lesson33_34ExTests.m */; };
+		E01FC4131A77C1E6008B5FDC /* file.png in Resources */ = {isa = PBXBuildFile; fileRef = E01FC4111A77C1E6008B5FDC /* file.png */; };
+		E01FC4141A77C1E6008B5FDC /* folder.png in Resources */ = {isa = PBXBuildFile; fileRef = E01FC4121A77C1E6008B5FDC /* folder.png */; };
+		E01FC4171A77C3C6008B5FDC /* RJTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E01FC4161A77C3C6008B5FDC /* RJTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -32,14 +34,16 @@
 		E01FC3EC1A77C004008B5FDC /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		E01FC3EE1A77C004008B5FDC /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E01FC3EF1A77C004008B5FDC /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		E01FC3F11A77C004008B5FDC /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		E01FC3F21A77C004008B5FDC /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		E01FC3F51A77C004008B5FDC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E01FC3F71A77C004008B5FDC /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		E01FC3FA1A77C004008B5FDC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		E01FC4001A77C004008B5FDC /* Lesson33-34ExTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Lesson33-34ExTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E01FC4051A77C004008B5FDC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E01FC4061A77C004008B5FDC /* Lesson33_34ExTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Lesson33_34ExTests.m; sourceTree = "<group>"; };
+		E01FC4111A77C1E6008B5FDC /* file.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = file.png; sourceTree = "<group>"; };
+		E01FC4121A77C1E6008B5FDC /* folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = folder.png; sourceTree = "<group>"; };
+		E01FC4151A77C3C6008B5FDC /* RJTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RJTableViewController.h; sourceTree = "<group>"; };
+		E01FC4161A77C3C6008B5FDC /* RJTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RJTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,10 +85,10 @@
 		E01FC3E91A77C004008B5FDC /* Lesson33-34Ex */ = {
 			isa = PBXGroup;
 			children = (
+				E01FC4151A77C3C6008B5FDC /* RJTableViewController.h */,
+				E01FC4161A77C3C6008B5FDC /* RJTableViewController.m */,
 				E01FC3EE1A77C004008B5FDC /* AppDelegate.h */,
 				E01FC3EF1A77C004008B5FDC /* AppDelegate.m */,
-				E01FC3F11A77C004008B5FDC /* ViewController.h */,
-				E01FC3F21A77C004008B5FDC /* ViewController.m */,
 				E01FC3F41A77C004008B5FDC /* Main.storyboard */,
 				E01FC3F71A77C004008B5FDC /* Images.xcassets */,
 				E01FC3F91A77C004008B5FDC /* LaunchScreen.xib */,
@@ -96,6 +100,7 @@
 		E01FC3EA1A77C004008B5FDC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				E01FC4101A77C1E6008B5FDC /* Images */,
 				E01FC3EB1A77C004008B5FDC /* Info.plist */,
 				E01FC3EC1A77C004008B5FDC /* main.m */,
 			);
@@ -118,6 +123,15 @@
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
+		};
+		E01FC4101A77C1E6008B5FDC /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				E01FC4111A77C1E6008B5FDC /* file.png */,
+				E01FC4121A77C1E6008B5FDC /* folder.png */,
+			);
+			path = Images;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -202,6 +216,8 @@
 				E01FC3F61A77C004008B5FDC /* Main.storyboard in Resources */,
 				E01FC3FB1A77C004008B5FDC /* LaunchScreen.xib in Resources */,
 				E01FC3F81A77C004008B5FDC /* Images.xcassets in Resources */,
+				E01FC4131A77C1E6008B5FDC /* file.png in Resources */,
+				E01FC4141A77C1E6008B5FDC /* folder.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -219,7 +235,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E01FC3F31A77C004008B5FDC /* ViewController.m in Sources */,
+				E01FC4171A77C3C6008B5FDC /* RJTableViewController.m in Sources */,
 				E01FC3F01A77C004008B5FDC /* AppDelegate.m in Sources */,
 				E01FC3ED1A77C004008B5FDC /* main.m in Sources */,
 			);
@@ -414,6 +430,7 @@
 				E01FC40C1A77C004008B5FDC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E01FC40D1A77C004008B5FDC /* Build configuration list for PBXNativeTarget "Lesson33-34ExTests" */ = {
 			isa = XCConfigurationList;
@@ -422,6 +439,7 @@
 				E01FC40F1A77C004008B5FDC /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
