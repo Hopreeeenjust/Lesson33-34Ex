@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface RJTableViewController : UITableViewController
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *addButton;
 
+- (IBAction)addRepository:(UIBarButtonItem *)sender;
 @end

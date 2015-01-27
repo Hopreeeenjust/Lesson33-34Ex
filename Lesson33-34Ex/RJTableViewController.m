@@ -8,9 +8,10 @@
 
 #import "RJTableViewController.h"
 
-@interface RJTableViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface RJTableViewController () <UITableViewDelegate, UITableViewDataSource, NSFileManagerDelegate>
 @property (strong, nonatomic) NSString *path;
 @property (strong, nonatomic) NSArray *contents;
+@property (strong, nonatomic) NSString *folderName;
 @end
 
 @implementation RJTableViewController
@@ -44,12 +45,12 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    //right bar button item
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [NSFileManager defaultManager].delegate = self;
     
     self.navigationItem.title = [self.path lastPathComponent];
     
@@ -86,14 +87,17 @@
     }
 }
 
-//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-//    if (editingStyle == UITableViewCellEditingStyleDelete) {
-//         Delete the row from the data source
-//        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-//    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-//         Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-//    }   
-//}
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        NSString *fileName = [self.contents objectAtIndex:indexPath.row];
+        NSString *path = [self.path stringByAppendingPathComponent:fileName];
+        NSFileManager *manager = [NSFileManager defaultManager];
+        [self fileManager:manager shouldRemoveItemAtPath:path];
+    }
+    [tableView beginUpdates];
+    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    [tableView endUpdates];
+}
 
 #pragma mark - UITableViewDelegate
 
@@ -109,6 +113,11 @@
     }
 }
 
+#pragma mark - Actions
+
+- (IBAction)addRepository:(UIBarButtonItem *)sender {
+    [self showEnterFolderNmaeAlert];
+}
 
 #pragma mark - Help methods
 
@@ -118,6 +127,74 @@
     NSString *filePath = [self.path stringByAppendingPathComponent:fileName];
     [[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory:&isDirectory];
     return isDirectory;
+}
+
+- (void)createNewFolderWithName:(NSString *)name {
+    NSString *folderName = name;
+    if (![self isFreeNameForFolder:folderName]) {
+        [self showNameInUseAlert];
+    } else {
+        [self addNewFolderToDirectoryWithName:folderName];
+    }
+
+}
+
+- (BOOL)isFreeNameForFolder:(NSString *)name {
+    BOOL breakFlag = NO;
+    for (NSString *fileName in self.contents) {
+        NSInteger i = [self.contents indexOfObject:fileName];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+        if ([fileName isEqualToString:name] && [self isDirectoryAtIndexPath:indexPath]) {
+            breakFlag = YES;
+            break;
+        }
+    }
+    if (breakFlag) {
+        return NO;
+    } else {
+        return YES;
+    }
+}
+
+- (void)addNewFolderToDirectoryWithName:(NSString *)folderName {
+    NSString *path = [self.path stringByAppendingPathComponent:folderName];
+    NSError *error = nil;
+    [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error];
+    if (error) {
+        NSLog(@"%@", [error localizedDescription]);
+    }
+    NSMutableArray *tempArray = [NSMutableArray arrayWithArray:self.contents];
+    [tempArray addObject:folderName];
+    self.contents = tempArray;
+    [self.tableView reloadData];
+}
+
+- (void)showNameInUseAlert {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Sorry" message:@"This folder name is already in use. Please, choose another name" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
+}
+
+- (void) showEnterFolderNmaeAlert {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Folder name needed" message:@"Please, enter folder name" delegate:self cancelButtonTitle:@"Done" otherButtonTitles:nil];
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [alert show];
+}
+
+#pragma mark - UIAlertViewDelegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if ([alertView.title isEqualToString:@"Sorry"]) {
+        [self showEnterFolderNmaeAlert];
+    } else {
+        NSString *folderName = [alertView textFieldAtIndex:0].text;
+        [self createNewFolderWithName:folderName];
+    }
+}
+
+#pragma mark - NSFileManagerDelegate
+
+- (BOOL)fileManager:(NSFileManager *)fileManager shouldRemoveItemAtPath:(NSString *)path {
+    return YES;
 }
 
 @end

@@ -66,9 +66,16 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Title" id="fJW-Le-vPO">
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="KPd-qc-o1t"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="KPd-qc-o1t">
+                            <connections>
+                                <action selector="addRepository:" destination="FIc-fp-Ugr" id="bcx-MJ-rUy"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="addButton" destination="KPd-qc-o1t" id="w0O-6g-dgz"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wjz-5n-jj2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
