@@ -16,6 +16,9 @@
 		E01FC4131A77C1E6008B5FDC /* file.png in Resources */ = {isa = PBXBuildFile; fileRef = E01FC4111A77C1E6008B5FDC /* file.png */; };
 		E01FC4141A77C1E6008B5FDC /* folder.png in Resources */ = {isa = PBXBuildFile; fileRef = E01FC4121A77C1E6008B5FDC /* folder.png */; };
 		E01FC4171A77C3C6008B5FDC /* RJTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E01FC4161A77C3C6008B5FDC /* RJTableViewController.m */; };
+		E06A952A1A798C79006FDA71 /* file1.png in Resources */ = {isa = PBXBuildFile; fileRef = E06A95281A798C78006FDA71 /* file1.png */; };
+		E06A952B1A798C79006FDA71 /* folder1.png in Resources */ = {isa = PBXBuildFile; fileRef = E06A95291A798C78006FDA71 /* folder1.png */; };
+		E06A952D1A798D80006FDA71 /* file2.png in Resources */ = {isa = PBXBuildFile; fileRef = E06A952C1A798D80006FDA71 /* file2.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +47,9 @@
 		E01FC4121A77C1E6008B5FDC /* folder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = folder.png; sourceTree = "<group>"; };
 		E01FC4151A77C3C6008B5FDC /* RJTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RJTableViewController.h; sourceTree = "<group>"; };
 		E01FC4161A77C3C6008B5FDC /* RJTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RJTableViewController.m; sourceTree = "<group>"; };
+		E06A95281A798C78006FDA71 /* file1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = file1.png; sourceTree = "<group>"; };
+		E06A95291A798C78006FDA71 /* folder1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = folder1.png; sourceTree = "<group>"; };
+		E06A952C1A798D80006FDA71 /* file2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = file2.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,8 +133,11 @@
 		E01FC4101A77C1E6008B5FDC /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				E06A95281A798C78006FDA71 /* file1.png */,
+				E06A95291A798C78006FDA71 /* folder1.png */,
 				E01FC4111A77C1E6008B5FDC /* file.png */,
 				E01FC4121A77C1E6008B5FDC /* folder.png */,
+				E06A952C1A798D80006FDA71 /* file2.png */,
 			);
 			path = Images;
 			sourceTree = SOURCE_ROOT;
@@ -216,7 +225,10 @@
 				E01FC3F61A77C004008B5FDC /* Main.storyboard in Resources */,
 				E01FC3FB1A77C004008B5FDC /* LaunchScreen.xib in Resources */,
 				E01FC3F81A77C004008B5FDC /* Images.xcassets in Resources */,
+				E06A952A1A798C79006FDA71 /* file1.png in Resources */,
+				E06A952B1A798C79006FDA71 /* folder1.png in Resources */,
 				E01FC4131A77C1E6008B5FDC /* file.png in Resources */,
+				E06A952D1A798D80006FDA71 /* file2.png in Resources */,
 				E01FC4141A77C1E6008B5FDC /* folder.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

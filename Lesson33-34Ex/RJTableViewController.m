@@ -33,8 +33,8 @@
     
     NSError *error = nil;
     self.contents = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[NSURL fileURLWithPath:self.path] includingPropertiesForKeys:[NSArray arrayWithObject:NSURLNameKey] options:NSDirectoryEnumerationSkipsHiddenFiles error:&error];
-    [self makePathFromUrl];
-    [self objectsSorting];
+    self.contents = [self makePathFromUrlInArray:self.contents];
+    self.contents = [self objectsSortingInArray:self.contents andPath:self.path];
     if (error) {
         NSLog(@"%@", [error localizedDescription]);
     }
@@ -77,9 +77,11 @@
     
     NSString *fileName = [self.contents objectAtIndex:indexPath.row];
     
-    if ([self isDirectoryAtIndexPath:indexPath]) {
+    if ([self isDirectoryAtIndexPath:indexPath inArray:self.contents andPath:self.path]) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:folderIdentifier];
         cell.textLabel.text = fileName;
+//        double folderSize = [self sizeOfDirectory];
+//        cell.detailTextLabel.text = [self sizeRepresentationFromBytes:folderSize];
         return cell;
     } else {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:fileIdentifier];
@@ -115,7 +117,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if ([self isDirectoryAtIndexPath:indexPath]) {
+    if ([self isDirectoryAtIndexPath:indexPath inArray:self.contents andPath:self.path]) {
         NSString *fileName = [self.contents objectAtIndex:indexPath.row];
         NSString *path = [self.path stringByAppendingPathComponent:fileName];
         RJTableViewController *vc = [self.storyboard instantiateViewControllerWithIdentifier:@"RJTableViewController"];
@@ -132,10 +134,10 @@
 
 #pragma mark - Help methods
 
-- (BOOL)isDirectoryAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *fileName = [self.contents objectAtIndex:indexPath.row];
+- (BOOL)isDirectoryAtIndexPath:(NSIndexPath *)indexPath inArray:(NSArray *)array andPath:(NSString *)path {
+    NSString *fileName = [array objectAtIndex:indexPath.row];
     BOOL isDirectory = NO;
-    NSString *filePath = [self.path stringByAppendingPathComponent:fileName];
+    NSString *filePath = [path stringByAppendingPathComponent:fileName];
     [[NSFileManager defaultManager] fileExistsAtPath:filePath isDirectory:&isDirectory];
     return isDirectory;
 }
@@ -155,7 +157,7 @@
     for (NSString *fileName in self.contents) {
         NSInteger i = [self.contents indexOfObject:fileName];
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
-        if ([fileName isEqualToString:name] && [self isDirectoryAtIndexPath:indexPath]) {
+        if ([fileName isEqualToString:name] && [self isDirectoryAtIndexPath:indexPath inArray:self.contents andPath:self.path]) {
             breakFlag = YES;
             break;
         }
@@ -191,30 +193,30 @@
     [alert show];
 }
 
-- (void)objectsSorting {
-    NSArray *sortedArray = [self.contents sortedArrayUsingComparator:^NSComparisonResult(NSString *obj1, NSString *obj2) {
-        if ([self isDirectoryAtIndexPath: [NSIndexPath indexPathForRow:[self.contents indexOfObject:obj1] inSection:0]] && [self isDirectoryAtIndexPath: [NSIndexPath indexPathForRow:[self.contents indexOfObject:obj2] inSection:0]]) {
+- (NSArray *)objectsSortingInArray:(NSArray *)array andPath:(NSString *)path {
+    NSArray *sortedArray = [array sortedArrayUsingComparator:^NSComparisonResult(NSString *obj1, NSString *obj2) {
+        if ([self isDirectoryAtIndexPath: [NSIndexPath indexPathForRow:[array indexOfObject:obj1] inSection:0] inArray:array andPath:path] && [self isDirectoryAtIndexPath: [NSIndexPath indexPathForRow:[array indexOfObject:obj2] inSection:0] inArray:array andPath:path]) {
             return [obj1 compare:obj2];
-        } else if (![self isDirectoryAtIndexPath: [NSIndexPath indexPathForRow:[self.contents indexOfObject:obj1] inSection:0]] && ![self isDirectoryAtIndexPath: [NSIndexPath indexPathForRow:[self.contents indexOfObject:obj2] inSection:0]]) {
+        } else if (![self isDirectoryAtIndexPath: [NSIndexPath indexPathForRow:[array indexOfObject:obj1] inSection:0] inArray:array andPath:path] && ![self isDirectoryAtIndexPath: [NSIndexPath indexPathForRow:[array indexOfObject:obj2] inSection:0] inArray:array andPath:path]) {
             return [obj1 compare:obj2];
-        } else if ([self isDirectoryAtIndexPath: [NSIndexPath indexPathForRow:[self.contents indexOfObject:obj1] inSection:0]]) {
+        } else if ([self isDirectoryAtIndexPath: [NSIndexPath indexPathForRow:[array indexOfObject:obj1] inSection:0] inArray:array andPath:path]) {
             return NSOrderedAscending;
         } else {
             return NSOrderedDescending;
         }
     }];
-    self.contents = sortedArray;
+    return sortedArray;
 }
 
-- (void)makePathFromUrl {
+- (NSArray *)makePathFromUrlInArray:(NSArray *)array {
     NSMutableArray *tempArray = [NSMutableArray array];
-    for (int i = 0; i < [self.contents count]; i++) {
-        NSURL *url = [self.contents objectAtIndex:i];
+    for (int i = 0; i < [array count]; i++) {
+        NSURL *url = [array objectAtIndex:i];
         NSString *string = url.path;
         string = [string lastPathComponent];
         [tempArray addObject:string];
     }
-    self.contents = tempArray;
+    return tempArray;
 }
 
 - (NSString *)sizeRepresentationFromBytes:(unsigned long long)sizeInBytes {
@@ -226,6 +228,31 @@
         i++;
     }
     return [NSString stringWithFormat:@"%.2f %@", size, array[i]];
+}
+
+- (double)sizeOfDirectory {
+    static NSString *path = @"/Users/roma/Documents/iOS dev course";
+    NSArray *array = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[NSURL fileURLWithPath:path] includingPropertiesForKeys:[NSArray arrayWithObject:NSURLNameKey] options:NSDirectoryEnumerationSkipsHiddenFiles error:nil];
+    array = [self makePathFromUrlInArray:array];
+    array = [self objectsSortingInArray:array andPath:path];
+    static double sumSize = 0;
+    for (NSInteger i = 0; i < [array count]; i++) {
+        NSString *fileName = [array objectAtIndex:i];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+        if (![self isDirectoryAtIndexPath:indexPath inArray:array andPath:path]) {
+            path = [path stringByAppendingPathComponent:fileName];
+            NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:nil];
+            unsigned long long sizeInBytes = [attributes fileSize];
+            sumSize += sizeInBytes;
+            path = [path stringByDeletingLastPathComponent];
+        } else {
+            path = [path stringByAppendingPathComponent:fileName];
+            [self sizeOfDirectory];
+        }
+    }
+    path = [path stringByDeletingLastPathComponent];
+    [self sizeOfDirectory];
+    return sumSize;
 }
 
 
