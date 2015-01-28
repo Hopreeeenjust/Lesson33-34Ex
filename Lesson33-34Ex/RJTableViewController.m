@@ -32,8 +32,9 @@
     _path = path;
     
     NSError *error = nil;
-    self.contents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:self.path
-                                                                        error:&error];
+    self.contents = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[NSURL fileURLWithPath:self.path] includingPropertiesForKeys:[NSArray arrayWithObject:NSURLNameKey] options:NSDirectoryEnumerationSkipsHiddenFiles error:&error];
+    [self makePathFromUrl];
+    [self objectsSorting];
     if (error) {
         NSLog(@"%@", [error localizedDescription]);
     }
@@ -184,6 +185,32 @@
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Choose the name for new folder" message:@"Please, enter folder name" delegate:self cancelButtonTitle:@"Done" otherButtonTitles:nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
     [alert show];
+}
+
+- (void)objectsSorting {
+    NSArray *sortedArray = [self.contents sortedArrayUsingComparator:^NSComparisonResult(NSString *obj1, NSString *obj2) {
+        if ([self isDirectoryAtIndexPath: [NSIndexPath indexPathForRow:[self.contents indexOfObject:obj1] inSection:0]] && [self isDirectoryAtIndexPath: [NSIndexPath indexPathForRow:[self.contents indexOfObject:obj2] inSection:0]]) {
+            return [obj1 compare:obj2];
+        } else if (![self isDirectoryAtIndexPath: [NSIndexPath indexPathForRow:[self.contents indexOfObject:obj1] inSection:0]] && ![self isDirectoryAtIndexPath: [NSIndexPath indexPathForRow:[self.contents indexOfObject:obj2] inSection:0]]) {
+            return [obj1 compare:obj2];
+        } else if ([self isDirectoryAtIndexPath: [NSIndexPath indexPathForRow:[self.contents indexOfObject:obj1] inSection:0]]) {
+            return NSOrderedAscending;
+        } else {
+            return NSOrderedDescending;
+        }
+    }];
+    self.contents = sortedArray;
+}
+
+- (void)makePathFromUrl {
+    NSMutableArray *tempArray = [NSMutableArray array];
+    for (int i = 0; i < [self.contents count]; i++) {
+        NSURL *url = [self.contents objectAtIndex:i];
+        NSString *string = url.path;
+        string = [string lastPathComponent];
+        [tempArray addObject:string];
+    }
+    self.contents = tempArray;
 }
 
 #pragma mark - UIAlertViewDelegate
