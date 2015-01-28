@@ -84,6 +84,10 @@
     } else {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:fileIdentifier];
         cell.textLabel.text = fileName;
+        NSString *path = [self.path stringByAppendingPathComponent:fileName];
+        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:nil];
+        unsigned long long sizeInBytes = [attributes fileSize];
+        cell.detailTextLabel.text = [self sizeRepresentationFromBytes:sizeInBytes];
         return cell;
     }
 }
@@ -212,6 +216,18 @@
     }
     self.contents = tempArray;
 }
+
+- (NSString *)sizeRepresentationFromBytes:(unsigned long long)sizeInBytes {
+    NSArray *array = @[@"B", @"Kb", @"Mb", @"Gb", @"Tb"];
+    CGFloat size = (CGFloat)sizeInBytes;
+    NSInteger i = 0;
+    while (size > 1024 && i < [array count]) {
+        size /= 1024;
+        i++;
+    }
+    return [NSString stringWithFormat:@"%.2f %@", size, array[i]];
+}
+
 
 #pragma mark - UIAlertViewDelegate
 
