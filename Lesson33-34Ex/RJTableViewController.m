@@ -91,8 +91,14 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSString *fileName = [self.contents objectAtIndex:indexPath.row];
         NSString *path = [self.path stringByAppendingPathComponent:fileName];
-        NSFileManager *manager = [NSFileManager defaultManager];
-        [self fileManager:manager shouldRemoveItemAtPath:path];
+        NSError *error = nil;
+        [[NSFileManager defaultManager] removeItemAtPath:path error:&error];
+        if (error) {
+            NSLog(@"%@", [error localizedDescription]);
+        }
+        NSMutableArray *tempArray = [NSMutableArray arrayWithArray:self.contents];
+        [tempArray removeObjectAtIndex:indexPath.row];
+        self.contents = tempArray;
     }
     [tableView beginUpdates];
     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
@@ -116,7 +122,7 @@
 #pragma mark - Actions
 
 - (IBAction)addRepository:(UIBarButtonItem *)sender {
-    [self showEnterFolderNmaeAlert];
+    [self showEnterFolderNameAlert];
 }
 
 #pragma mark - Help methods
@@ -174,8 +180,8 @@
     [alert show];
 }
 
-- (void) showEnterFolderNmaeAlert {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Folder name needed" message:@"Please, enter folder name" delegate:self cancelButtonTitle:@"Done" otherButtonTitles:nil];
+- (void) showEnterFolderNameAlert {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Choose the name for new folder" message:@"Please, enter folder name" delegate:self cancelButtonTitle:@"Done" otherButtonTitles:nil];
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
     [alert show];
 }
@@ -184,7 +190,7 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if ([alertView.title isEqualToString:@"Sorry"]) {
-        [self showEnterFolderNmaeAlert];
+        [self showEnterFolderNameAlert];
     } else {
         NSString *folderName = [alertView textFieldAtIndex:0].text;
         [self createNewFolderWithName:folderName];
