@@ -16,6 +16,9 @@
 
 @implementation RJTableViewController
 
+static double sumSize = 0;
+static BOOL isEnd = NO;
+
 #pragma mark - Initialization
 
 - (instancetype)initWithPath:(NSString *)path {
@@ -80,8 +83,11 @@
     if ([self isDirectoryAtIndexPath:indexPath inArray:self.contents andPath:self.path]) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:folderIdentifier];
         cell.textLabel.text = fileName;
-//        double folderSize = [self sizeOfDirectory];
-//        cell.detailTextLabel.text = [self sizeRepresentationFromBytes:folderSize];
+        NSString *currentDirectoryPath = [self.path stringByAppendingPathComponent:fileName];
+        sumSize = 0;
+        isEnd = NO;
+        double folderSize = [self sizeOfDirectoryAtPath:currentDirectoryPath];
+        cell.detailTextLabel.text = [self sizeRepresentationFromBytes:folderSize];
         return cell;
     } else {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:fileIdentifier];
@@ -230,13 +236,15 @@
     return [NSString stringWithFormat:@"%.2f %@", size, array[i]];
 }
 
-- (double)sizeOfDirectory {
-    static NSString *path = @"/Users/roma/Documents/iOS dev course";
+- (double)sizeOfDirectoryAtPath:(NSString *)path {
     NSArray *array = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[NSURL fileURLWithPath:path] includingPropertiesForKeys:[NSArray arrayWithObject:NSURLNameKey] options:NSDirectoryEnumerationSkipsHiddenFiles error:nil];
     array = [self makePathFromUrlInArray:array];
     array = [self objectsSortingInArray:array andPath:path];
-    static double sumSize = 0;
     for (NSInteger i = 0; i < [array count]; i++) {
+        if (isEnd) {
+            path = [path stringByDeletingLastPathComponent];
+        }
+        isEnd = NO;
         NSString *fileName = [array objectAtIndex:i];
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
         if (![self isDirectoryAtIndexPath:indexPath inArray:array andPath:path]) {
@@ -247,11 +255,11 @@
             path = [path stringByDeletingLastPathComponent];
         } else {
             path = [path stringByAppendingPathComponent:fileName];
-            [self sizeOfDirectory];
+            [self sizeOfDirectoryAtPath:path];
         }
     }
     path = [path stringByDeletingLastPathComponent];
-    [self sizeOfDirectory];
+    isEnd = YES;
     return sumSize;
 }
 
